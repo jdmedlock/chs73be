@@ -1,5 +1,8 @@
+const asyncHandler = require('express-async-handler')
 
-export const wakeUp = async (request, reply) => {  
-  console.log('wakeUp called')
-  await reply.code(200).send({ status: "Awake" })
-}
+const wakeUp = asyncHandler(async (req, res) => {
+  console.log("I'm now awake")
+  res.status(200).json({ status: "Awake" });
+})
+
+exports.wakeUp = wakeUp

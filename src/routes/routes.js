@@ -1,15 +1,9 @@
-import { sendMessage } from '../controllers/mailjet.js'
-import { wakeUp } from '../controllers/wakeup.js'
+const express = require('express');
+const { wakeUp } = require('../controllers/wakeup');
 
-export const chsRoutes = [
-    {
-        method: 'GET',
-        url: '/wakeup',
-        handler: wakeUp
-    },
-    {
-        method: 'POST',
-        url: '/message',
-        handler: sendMessage
-    },
-]
+const router = express.Router();
+
+router.route('/wakeup')
+    .get(wakeUp)
+
+module.exports = router
