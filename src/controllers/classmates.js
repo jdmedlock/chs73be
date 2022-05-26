@@ -1,42 +1,29 @@
 const Airtable = require('airtable')
-const asyncHandler = require('express-async-handler')
 
-// Retrieve the number of Applications for the matching starting & ending 
-// date range
-const getClassmatesJSON = asyncHandler(async (req, res) => {
+const retrieveClassmates = async () => {
+
   const base = new Airtable({ apiKey: process.env.AIRTABLE_API_KEY }).base(process.env.AIRTABLE_BASE)
   let classmates = []
-
-  base('Classmates').select({ 
-    view: 'Classmates' 
-  }).eachPage(function page(records, fetchNextPage) {
-    // This function (`page`) will get called for each page of records.
-    records.forEach(function (record) {
-      classmates.push({
-        "confirmed": record.fields.Confirmed,
-        "inYearbook": record.fields.inYearbook,
-        "firstName": record.fields.firstName,
-        "lastName": record.fields.lastName,
-        "marriedLastName": record.fields.marriedLastName === undefined ? "" : record.fields.marriedLastName,
-        "volunteer": record.fields.volunteer,
-        "deceased": record.fields.deceased,
-        "cloudinaryId": record.fields.cloudinaryId === undefined ? "" : record.fields.cloudinaryId,
-      })
+  const records = await base('Classmates').select({ view: 'Classmates' }).all()
+  for(let record of records) {
+    classmates.push({
+      "confirmed": record.get("Confirmed"),
+      "inYearbook": record.get("inYearbook"),
+      "firstName": record.get("firstName"),
+      "lastName": record.get("lastName"),
+      "marriedLastName": record.get("marriedLastName") === undefined ? "" : record.get("marriedLastName"),
+      "volunteer": record.get("volunteer"),
+      "deceased": record.get("deceased"),
+      "cloudinaryId": record.get("cloudinaryId") === undefined ? "" : record.get("cloudinaryId"),
     })
+  }
+  return classmates
+}
 
-    // To fetch the next page of records, call `fetchNextPage`.
-    // If there are more records, `page` will get called again.
-    // If there are no more records, `done` will get called.
-    fetchNextPage()
-  }, function done(err) {
-    if (err) { 
-      console.error(err)
-      return
-    }
-    //console.log(`Record count: ${ recordCount }`)
-    console.log('Classmates: ', classmates)
-    res.status(200).json(classmates)
-  })
-})
+const getClassmates = async (req, res) => {
+  const classmates = await retrieveClassmates()
+  console.log('classmates getClassmates - classmates.length: ', classmates.length)
+  res.set("ok", true).status(200).send(classmates)   
+}
 
-exports.getClassmatesJSON = getClassmatesJSON
+exports.getClassmates = getClassmates

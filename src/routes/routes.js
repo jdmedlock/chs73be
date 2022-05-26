@@ -1,11 +1,11 @@
 const express = require('express')
-const { getClassmatesJSON } = require('../controllers/classmates')
+const { getClassmates } = require('../controllers/classmates')
 const { wakeUp } = require('../controllers/wakeup')
 
 const router = express.Router()
 
 router.route('/classmates')
-  .get(getClassmatesJSON)
+  .get(getClassmates)
 router.route('/wakeup')
   .get(wakeUp)
 
