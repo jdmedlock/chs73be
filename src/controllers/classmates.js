@@ -22,7 +22,6 @@ const retrieveClassmates = async () => {
 
 const getClassmates = async (req, res) => {
   const classmates = await retrieveClassmates()
-  console.log('classmates getClassmates - classmates.length: ', classmates.length)
   res.set("ok", true).status(200).send(classmates)   
 }
 

@@ -22,7 +22,6 @@ const retrieveFaculty = async () => {
 
 const getFaculty = async (req, res) => {
   const faculty = await retrieveFaculty()
-  console.log('faculty getFaculty - faculty.length: ', faculty.length)
   res.set("ok", true).status(200).send(faculty)   
 }
 
