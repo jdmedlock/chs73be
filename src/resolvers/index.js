@@ -2,7 +2,7 @@ const sendMail = require('./sendMail')
 const sendTigerHunt = require('./sendTigerHunt')
 
 const resolvers = {
-  Query: {
+  Query: {   
     wakeUp: (_, __, context) => {
       return {
         result: {
