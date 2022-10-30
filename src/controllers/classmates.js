@@ -1,11 +1,10 @@
 const Airtable = require('airtable')
 
 const retrieveClassmates = async () => {
-
   const base = new Airtable({ apiKey: process.env.AIRTABLE_API_KEY }).base(process.env.AIRTABLE_BASE)
   let classmates = []
   const records = await base('Classmates').select({ view: 'Classmates' }).all()
-  for(let record of records) {
+  for (let record of records) {
     classmates.push({
       "confirmed": record.get("Confirmed"),
       "inYearbook": record.get("inYearbook"),
