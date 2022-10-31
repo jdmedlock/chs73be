@@ -3,7 +3,7 @@ const Airtable = require('airtable')
 const addPayment = async (order_id, item_description, order_amount, 
   transaction_status, transaction_creation_time, transaction_update_time,
   payer_source, payer_email_address, payer_firstname, payer_lastname,
-  payment_id, payer_id, shipping_address_line_1, shipping_address_line_2, 
+  payer_id, shipping_address_line_1, shipping_address_line_2, 
   shipping_city, shipping_state, shipping_postal_code, shipping_country_code, 
   billing_token, facilitator_access_token, accelerated_payment, soft_descriptor) => {
   
@@ -20,7 +20,6 @@ const addPayment = async (order_id, item_description, order_amount,
       "Order Amount": order_amount || 0,
       "Payer ID": payer_id || '',
       "Payment Source": payer_source || 'Unknown',
-      "Payment ID": payment_id || '',
       "Payer Email": payer_email_address || '',
       "Payer First Name": payer_firstname || '',
       "Payer Last Name": payer_lastname || '',
@@ -48,14 +47,14 @@ const logPayment = async (req, res) => {
   const { order_id, item_description, order_amount, 
     transaction_status, transaction_creation_time, transaction_update_time,
     payer_source, payer_email_address, payer_firstname, payer_lastname,
-    payment_id, payer_id, shipping_address_line_1, shipping_address_line_2, 
+    payer_id, shipping_address_line_1, shipping_address_line_2, 
     shipping_city, shipping_state, shipping_postal_code, shipping_country_code, 
     billing_token, facilitator_access_token, accelerated_payment, soft_descriptor } = req.body
 
   const recordID = await addPayment(order_id, item_description, order_amount, 
     transaction_status, transaction_creation_time, transaction_update_time,
     payer_source, payer_email_address, payer_firstname, payer_lastname,
-    payment_id, payer_id, shipping_address_line_1, shipping_address_line_2, 
+    payer_id, shipping_address_line_1, shipping_address_line_2, 
     shipping_city, shipping_state, shipping_postal_code, shipping_country_code, 
     billing_token, facilitator_access_token, accelerated_payment, soft_descriptor)
 
