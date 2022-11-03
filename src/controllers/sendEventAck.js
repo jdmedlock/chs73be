@@ -2,7 +2,7 @@ const nodemailjet = require("node-mailjet")
 
 const sendEventAck = async (req, res) => {
   const { order_id, item_description, event_date, 
-    order_amount, transaction_status, transaction_create_time, 
+    order_amount, transaction_status, transaction_creation_time, 
     payer_email_address, payer_firstname, payer_lastname, 
     shipping_address_line_1, shipping_address_line_2, 
     shipping_city, shipping_state, shipping_postal_code } = req.body
@@ -46,7 +46,7 @@ const sendEventAck = async (req, res) => {
             Order ID: ${ order_id } \r\n \
             Amount: $ ${ order_amount } \r\n \
             Transaction status: ${ transaction_status } \r\n \
-            Transaction created: ${ transaction_create_time } \r\n \
+            Transaction created: ${ transaction_creation_time } \r\n \
             Name: ${ payer_firstname } ${ payer_lastname } \r\n \
             Address: ${ shipping_address_line_1 } \r\n \
                      ${ shipping_address_line_2 } \r\n \
@@ -96,7 +96,7 @@ const sendEventAck = async (req, res) => {
 
               <div style=\"margin-top: 0rem; font-weight: bold; font-size: medium;\"> \
                 <span style=\"margin-top: .25rem; font-weight: bold; font-size: medium;\">Transaction created: </span>\
-                <span style=\"font-weight: normal; font-size: medium;\">${ transaction_create_time }</span> \
+                <span style=\"font-weight: normal; font-size: medium;\">${ transaction_creation_time }</span> \
               </div> \
 
               <div style=\"margin-top: 0rem; font-weight: bold; font-size: medium;\"> \
