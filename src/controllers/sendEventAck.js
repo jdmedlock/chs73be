@@ -28,7 +28,8 @@ const sendEventAck = async (req, res) => {
           ],
           "Subject": `CHS73 - Payment received for ${ item_description }`,
           "TextPart": `
-            Thank you ${ payer_firstname } for registering for the CHS73 ${ item_description } reunion event \r\n \
+            Hi ${ payer_firstname }, \r\n\r\n \ 
+            Thank you registering for the CHS73 ${ item_description } reunion event \r\n \
             scheduled for ${ event_date }! \r\n \
             \r\n \
             Your registration and payment for this event has been completed and we are\r\n \
@@ -37,7 +38,8 @@ const sendEventAck = async (req, res) => {
             \r\n \
             Please save this registration receipt for your records and thanks for your support. \r\n \
             \r\n \
-            The CHS73 50th Reunion Organizing Committee \r\n \
+            Best regards, \r\n \
+            Your CHS73 50th Reunion Organizing Committee \r\n \
             \r\n \
             Your registration information:  \r\n \
             \r\n \
@@ -55,7 +57,10 @@ const sendEventAck = async (req, res) => {
           "HTMLPart": ` \
             <div style=\"font-weight: normal; font-size: medium;\"> \
               <p>
-                Thank you ${ payer_firstname } for registering for the CHS73 ${ item_description } reunion event!
+                Hi ${ payer_firstname },
+              </p>
+              <p>
+                Thank you for registering for the CHS73 ${ item_description } reunion event!
               </p>
               <p>
                 Your registration and payment for this event has been completed and we are
@@ -65,9 +70,13 @@ const sendEventAck = async (req, res) => {
               <p>
                 Please save this registration receipt for your records and thanks for your support. 
               </p>
-                The CHS73 50th Reunion Organizing Committee 
+              <p>
+                Best regards, 
               </p>
               <p>
+                Your CHS73 50th Reunion Organizing Committee 
+              </p>
+              <p style=\"text-decoration: underline;\">
                 Your registration information:  
               </p>
               <div style=\"margin-top: 0rem; font-weight: bold; font-size: medium;\"> \
