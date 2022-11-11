@@ -5,7 +5,7 @@ const sendEventAck = async (req, res) => {
     order_amount, transaction_status, transaction_creation_time, 
     payer_email_address, payer_firstname, payer_lastname, 
     shipping_address_line_1, shipping_address_line_2, 
-    shipping_city, shipping_state, shipping_postal_code } = req.body
+    shipping_city, shipping_state, shipping_postal_code, sponsor } = req.body
   const mailjet = nodemailjet
     .connect(process.env.MAILJET_API_KEY, process.env.MAILJET_SECRET_KEY)
 
@@ -53,6 +53,8 @@ const sendEventAck = async (req, res) => {
             City: ${ shipping_city } \r\n \
             State: ${ shipping_state } \r\n \
             Zipcode: ${ shipping_postal_code } \r\n \
+            Agreed to sponsor another classmate: ${ sponsor } \r\n \
+
           `,
           "HTMLPart": ` \
             <div style=\"font-weight: normal; font-size: medium;\"> \
@@ -123,6 +125,12 @@ const sendEventAck = async (req, res) => {
                 <span style=\"margin-top: .25rem; font-weight: bold; font-size: medium;\"> State: </span>\
                 <span style=\"font-weight: normal; font-size: medium;\">${ shipping_state } Zip code: ${ shipping_postal_code }</span> \
               </div> \
+              
+              <div style=\"margin-top: 0rem; font-weight: bold; font-size: medium;\"> \
+                <span style=\"margin-top: .25rem; font-weight: bold; font-size: medium;\"> Agree to sponsor another classmate: </span>\
+                <span style=\"font-weight: normal; font-size: medium;\">${ sponsor }</span> \
+              </div> \
+
             </div> \
           `,
         }
