@@ -54,7 +54,6 @@ const sendEventAck = async (req, res) => {
             State: ${ shipping_state } \r\n \
             Zipcode: ${ shipping_postal_code } \r\n \
             Agreed to sponsor another classmate: ${ sponsor } \r\n \
-
           `,
           "HTMLPart": ` \
             <div style=\"font-weight: normal; font-size: medium;\"> \
