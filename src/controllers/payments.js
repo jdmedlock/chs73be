@@ -6,7 +6,7 @@ const addPayment = async (order_id, item_description, order_amount,
   payer_id, shipping_address_line_1, shipping_address_line_2, 
   shipping_city, shipping_state, shipping_postal_code, shipping_country_code, 
   billing_token, facilitator_access_token, accelerated_payment, soft_descriptor,
-  sponsor) => {
+  is_sponsor, classmateFirstName, classmateLastName, companionFirstName, companionLastName) => {
   
   const currentDate = new Date()
   const base = new Airtable({ apiKey: process.env.AIRTABLE_API_KEY }).base(process.env.AIRTABLE_BASE)
@@ -34,7 +34,11 @@ const addPayment = async (order_id, item_description, order_amount,
       "Payer Country Code": shipping_country_code || '',
       "Payer Postal Code": shipping_postal_code || '',
       "Soft Descriptor": soft_descriptor || '',
-      "Sponsor": sponsor || 'No',
+      "Sponsor": is_sponsor || 'No',
+      "Classmate Badge-First Name": classmateFirstName,
+      "Classmate Badge-Last Name": classmateLastName,
+      "Companion Badge-First Name": companionFirstName,
+      "Companion Badge-Last Name": companionLastName,
     }, function(err, record) {
       if (err) {
         console.error(err)
@@ -52,7 +56,7 @@ const logPayment = async (req, res) => {
     payer_id, shipping_address_line_1, shipping_address_line_2, 
     shipping_city, shipping_state, shipping_postal_code, shipping_country_code, 
     billing_token, facilitator_access_token, accelerated_payment, soft_descriptor,
-    sponsor } = req.body
+    is_sponsor, classmateFirstName, classmateLastName, companionFirstName, companionLastName } = req.body
 
   const recordID = await addPayment(order_id, item_description, order_amount, 
     transaction_status, transaction_creation_time, transaction_update_time,
@@ -60,7 +64,7 @@ const logPayment = async (req, res) => {
     payer_id, shipping_address_line_1, shipping_address_line_2, 
     shipping_city, shipping_state, shipping_postal_code, shipping_country_code, 
     billing_token, facilitator_access_token, accelerated_payment, soft_descriptor,
-    sponsor)
+    is_sponsor, classmateFirstName, classmateLastName, companionFirstName, companionLastName)
 
   // Email the payment receipt to the payee
 
