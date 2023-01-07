@@ -6,6 +6,92 @@ const sendEventAck = async (req, res) => {
     payer_email_address, payer_firstname, payer_lastname, 
     shipping_address_line_1, shipping_address_line_2, 
     shipping_city, shipping_state, shipping_postal_code, is_sponsor } = req.body
+
+    const createHTMLPart = () => {
+      let htmlPart = ` \
+        <div style=\"font-weight: normal; font-size: medium;\"> \
+          <p>
+            Hi ${ payer_firstname },
+          </p>
+          <p>
+            Thank you for registering for the CHS73 ${ item_description } reunion event!
+          </p>
+          <p>
+            Your registration and payment for this event has been completed and we are
+            looking forward to catching up with you and all our classmates then! We'll be
+            following up throughout 2023 with updates via email and to our website (https://chs73.net).
+          </p>
+          <p>
+            Please save this registration receipt for your records and thanks for your support. 
+          </p>
+          <p>
+            Best regards, 
+          </p>
+          <p>
+            Your CHS73 50th Reunion Organizing Committee 
+          </p>
+          <p style=\"text-decoration: underline;\">
+            Your registration information:  
+          </p>
+          <div style=\"margin-top: 0rem; font-weight: bold; font-size: medium;\"> \
+            <span style=\"margin-top: .25rem; font-weight: bold; font-size: medium;\">Order ID: </span>\
+            <span style=\"font-weight: normal; font-size: medium;\">${ order_id }</span> \
+          </div> \
+  
+          <div style=\"margin-top: 0rem; font-weight: bold; font-size: medium;\"> \
+            <span style=\"margin-top: .25rem; font-weight: bold; font-size: medium;\">Order amount: </span>\
+            <span style=\"font-weight: normal; font-size: medium;\">$ ${ order_amount }</span> \
+          </div> \
+  
+          <div style=\"margin-top: 0rem; font-weight: bold; font-size: medium;\"> \
+            <span style=\"margin-top: .25rem; font-weight: bold; font-size: medium;\">Transaction status: </span>\
+            <span style=\"font-weight: normal; font-size: medium;\">${ transaction_status }</span> \
+          </div> \
+  
+          <div style=\"margin-top: 0rem; font-weight: bold; font-size: medium;\"> \
+            <span style=\"margin-top: .25rem; font-weight: bold; font-size: medium;\">Transaction created: </span>\
+            <span style=\"font-weight: normal; font-size: medium;\">${ transaction_creation_time }</span> \
+          </div> \
+  
+          <div style=\"margin-top: 0rem; font-weight: bold; font-size: medium;\"> \
+            <span style=\"margin-top: .25rem; font-weight: bold; font-size: medium;\">Name: </span>\
+            <span style=\"font-weight: normal; font-size: medium;\">${ payer_firstname } ${ payer_lastname }</span> \
+          </div> \
+      `
+    
+      if (shipping_address_line_1 !== '') {
+        htmlPart.concat(`
+          <div style=\"margin-top: 0rem; font-weight: bold; font-size: medium;\"> \
+            <span style=\"margin-top: .25rem; font-weight: bold; font-size: medium;\">Address: </span>\
+            <span style=\"font-weight: normal; font-size: medium;\">${ shipping_address_line_1 }</span> \
+          </div> \
+  
+          <div style=\"margin-top: 0rem; font-weight: bold; font-size: medium;\"> \
+            <span style=\"margin-top: .25rem; font-weight: bold; font-size: medium;\"> </span> \
+            <span style=\"font-weight: normal; font-size: medium;\">${ shipping_address_line_2 }</span> \
+          </div> \
+  
+          <div style=\"margin-top: 0rem; font-weight: bold; font-size: medium;\"> \
+            <span style=\"margin-top: .25rem; font-weight: bold; font-size: medium;\">City: </span> \
+            <span style=\"font-weight: normal; font-size: medium;\">${ shipping_city }</span> \
+          </div> \
+  
+          <div style=\"margin-top: 0rem; font-weight: bold; font-size: medium;\"> \
+            <span style=\"margin-top: .25rem; font-weight: bold; font-size: medium;\"> State: </span>\
+            <span style=\"font-weight: normal; font-size: medium;\">${ shipping_state } Zip code: ${ shipping_postal_code }</span> \
+          </div> \
+          
+          <div style=\"margin-top: 0rem; font-weight: bold; font-size: medium;\"> \
+            <span style=\"margin-top: .25rem; font-weight: bold; font-size: medium;\"> Agree to sponsor another classmate: </span>\
+            <span style=\"font-weight: normal; font-size: medium;\">${ is_sponsor }</span> \
+          </div> \
+  
+        </div>`)
+      }
+      
+      return htmlPart
+    }  
+
   const mailjet = nodemailjet
     .connect(process.env.MAILJET_API_KEY, process.env.MAILJET_SECRET_KEY)
 
@@ -55,83 +141,7 @@ const sendEventAck = async (req, res) => {
             Zipcode: ${ shipping_postal_code } \r\n \
             Agreed to sponsor another classmate: ${ is_sponsor } \r\n \
           `,
-          "HTMLPart": ` \
-            <div style=\"font-weight: normal; font-size: medium;\"> \
-              <p>
-                Hi ${ payer_firstname },
-              </p>
-              <p>
-                Thank you for registering for the CHS73 ${ item_description } reunion event!
-              </p>
-              <p>
-                Your registration and payment for this event has been completed and we are
-                looking forward to catching up with you and all our classmates then! We'll be
-                following up throughout 2023 with updates via email and to our website (https://chs73.net).
-              </p>
-              <p>
-                Please save this registration receipt for your records and thanks for your support. 
-              </p>
-              <p>
-                Best regards, 
-              </p>
-              <p>
-                Your CHS73 50th Reunion Organizing Committee 
-              </p>
-              <p style=\"text-decoration: underline;\">
-                Your registration information:  
-              </p>
-              <div style=\"margin-top: 0rem; font-weight: bold; font-size: medium;\"> \
-                <span style=\"margin-top: .25rem; font-weight: bold; font-size: medium;\">Order ID: </span>\
-                <span style=\"font-weight: normal; font-size: medium;\">${ order_id }</span> \
-              </div> \
-
-              <div style=\"margin-top: 0rem; font-weight: bold; font-size: medium;\"> \
-                <span style=\"margin-top: .25rem; font-weight: bold; font-size: medium;\">Order amount: </span>\
-                <span style=\"font-weight: normal; font-size: medium;\">$ ${ order_amount }</span> \
-              </div> \
-
-              <div style=\"margin-top: 0rem; font-weight: bold; font-size: medium;\"> \
-                <span style=\"margin-top: .25rem; font-weight: bold; font-size: medium;\">Transaction status: </span>\
-                <span style=\"font-weight: normal; font-size: medium;\">${ transaction_status }</span> \
-              </div> \
-
-              <div style=\"margin-top: 0rem; font-weight: bold; font-size: medium;\"> \
-                <span style=\"margin-top: .25rem; font-weight: bold; font-size: medium;\">Transaction created: </span>\
-                <span style=\"font-weight: normal; font-size: medium;\">${ transaction_creation_time }</span> \
-              </div> \
-
-              <div style=\"margin-top: 0rem; font-weight: bold; font-size: medium;\"> \
-                <span style=\"margin-top: .25rem; font-weight: bold; font-size: medium;\">Name: </span>\
-                <span style=\"font-weight: normal; font-size: medium;\">${ payer_firstname } ${ payer_lastname }</span> \
-              </div> \
-
-              <div style=\"margin-top: 0rem; font-weight: bold; font-size: medium;\"> \
-                <span style=\"margin-top: .25rem; font-weight: bold; font-size: medium;\">Address: </span>\
-                <span style=\"font-weight: normal; font-size: medium;\">${ shipping_address_line_1 }</span> \
-              </div> \
-
-              <div style=\"margin-top: 0rem; font-weight: bold; font-size: medium;\"> \
-                <span style=\"margin-top: .25rem; font-weight: bold; font-size: medium;\"> </span> \
-                <span style=\"font-weight: normal; font-size: medium;\">${ shipping_address_line_2 }</span> \
-              </div> \
-
-              <div style=\"margin-top: 0rem; font-weight: bold; font-size: medium;\"> \
-                <span style=\"margin-top: .25rem; font-weight: bold; font-size: medium;\">City: </span> \
-                <span style=\"font-weight: normal; font-size: medium;\">${ shipping_city }</span> \
-              </div> \
-
-              <div style=\"margin-top: 0rem; font-weight: bold; font-size: medium;\"> \
-                <span style=\"margin-top: .25rem; font-weight: bold; font-size: medium;\"> State: </span>\
-                <span style=\"font-weight: normal; font-size: medium;\">${ shipping_state } Zip code: ${ shipping_postal_code }</span> \
-              </div> \
-              
-              <div style=\"margin-top: 0rem; font-weight: bold; font-size: medium;\"> \
-                <span style=\"margin-top: .25rem; font-weight: bold; font-size: medium;\"> Agree to sponsor another classmate: </span>\
-                <span style=\"font-weight: normal; font-size: medium;\">${ is_sponsor }</span> \
-              </div> \
-
-            </div> \
-          `,
+          "HTMLPart": createHTMLPart(),
         }
       ]
     })
