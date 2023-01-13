@@ -5,7 +5,7 @@ const sendEventAck = async (req, res) => {
     order_amount, transaction_status, transaction_creation_time, 
     payer_email_address, payer_firstname, payer_lastname, 
     shipping_address_line_1, shipping_address_line_2, 
-    shipping_city, shipping_state, shipping_postal_code, is_sponsor } = req.body
+    shipping_city, shipping_state, shipping_postal_code, is_sponsor, is_veteran } = req.body
 
     const createHTMLPart = () => {
       let htmlPart = ` \
@@ -85,6 +85,11 @@ const sendEventAck = async (req, res) => {
             <span style=\"margin-top: .25rem; font-weight: bold; font-size: medium;\"> Agree to sponsor another classmate: </span>\
             <span style=\"font-weight: normal; font-size: medium;\">${ is_sponsor }</span> \
           </div> \
+
+          <div style=\"margin-top: 0rem; font-weight: bold; font-size: medium;\"> \
+            <span style=\"margin-top: .25rem; font-weight: bold; font-size: medium;\"> Military veteran: </span>\
+            <span style=\"font-weight: normal; font-size: medium;\">${ is_veteran }</span> \
+          </div> \
   
         </div>`)
       }
@@ -140,6 +145,7 @@ const sendEventAck = async (req, res) => {
             State: ${ shipping_state } \r\n \
             Zipcode: ${ shipping_postal_code } \r\n \
             Agreed to sponsor another classmate: ${ is_sponsor } \r\n \
+            Military veteran: ${ is_veteran } \r\n \
           `,
           "HTMLPart": createHTMLPart(),
         }
