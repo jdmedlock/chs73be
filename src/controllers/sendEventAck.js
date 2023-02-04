@@ -55,6 +55,30 @@ const sendEventAck = async (req, res) => {
   }
 
   if(item_description === 'Saturday Gathering') {
+    let paymentInstructionLine1
+    let paymentInstructionLine2
+    let paymentInstructionLine3
+    let paymentInstructionLine4
+    let paymentInstructionLine5
+    let paymentInstructionLine6
+    if (transaction_status === 'PAYMENT PENDING - MAIL') {
+      paymentInstructionLine1 = "Please make your check out to Central High Class of 1973 & mail to:"
+      paymentInstructionLine2 = "Central High Class of 1973"
+      paymentInstructionLine3 = "C/o Dianna Todt"
+      paymentInstructionLine4 = "2086 Southern Expressway"
+      paymentInstructionLine5 = "Cape Girardeau, MO 63703"
+      paymentInstructionLine6 = ""
+    }
+
+    if (transaction_status === 'PAYMENT PENDING - DOOR') {
+      paymentInstructionLine1 = "Please present this receipt at the door along with your payment"
+      paymentInstructionLine2 = ""
+      paymentInstructionLine3 = ""
+      paymentInstructionLine4 = ""
+      paymentInstructionLine5 = ""
+      paymentInstructionLine6 = ""
+    }   
+
     const mailjetReq = mailjet
       .post("send", {'version': 'v3.1'})
       .request({
@@ -87,7 +111,13 @@ const sendEventAck = async (req, res) => {
               "classmateBadgeFirstName": `${ classmateFirstName }`,
               "classmateBadgeLastName": `${ classmateLastName }`,
               "companionBadgeFirstName": `${ companionFirstName }`,
-              "companionBadgeLastName": `${ companionLastName }`
+              "companionBadgeLastName": `${ companionLastName }`,
+              "paymentInstructionLine1": paymentInstructionLine1,
+              "paymentInstructionLine2": paymentInstructionLine2,
+              "paymentInstructionLine3": paymentInstructionLine3,
+              "paymentInstructionLine4": paymentInstructionLine4,
+              "paymentInstructionLine5": paymentInstructionLine5,
+              "paymentInstructionLine6": paymentInstructionLine6,
             }
           }
         ]
