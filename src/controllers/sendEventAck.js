@@ -13,7 +13,7 @@ const sendEventAck = async (req, res) => {
 
   console.log(`\nAcknowledging payment for ${ item_description } from ${ payer_firstname } ${ payer_lastname} (${ payer_email_address })`)
 
-  if(item_description === 'Friday Gathering') {
+  if (item_description === 'Friday Gathering') {
     const mailjetReq = mailjet
       .post("send", {'version': 'v3.1'})
       .request({
@@ -118,6 +118,88 @@ const sendEventAck = async (req, res) => {
               "paymentInstructionLine4": paymentInstructionLine4,
               "paymentInstructionLine5": paymentInstructionLine5,
               "paymentInstructionLine6": paymentInstructionLine6,
+            }
+          }
+        ]
+      })
+      mailjetReq
+        .then(async (result) => {
+          res.set("ok", true).status(200).send(`Emailed payment acknowledgement to ${ payer_email_address}`)   
+        })
+        .catch(async (err) => {
+          console.log('Error sending comment: ', err)
+          res.set("ok", false).status(500).send(`Email payment acknowledgement failed: `, err)   
+        })
+  } 
+  
+  if (item_description === 'Golf Outing') {
+    const mailjetReq = mailjet
+      .post("send", {'version': 'v3.1'})
+      .request({
+        "Messages": [
+          {
+            "From": {
+              "Email": `${ process.env.EMAIL_SENDER_ADDR }`,
+              "Name": `${ process.env.EMAIL_SENDER_NAME }`
+            },
+            "To": [
+              {
+                "Email": `${ payer_email_address }`,
+                "Name": `${ payer_firstname } ${ payer_lastname }`
+              }
+            ],
+            "TemplateID": 4612466,
+            "TemplateLanguage": true,
+            "Subject": "CHS73 50th Reunion - You are registered for the Golf Outing. We'll email event details when they become available",
+            "Variables": {
+              "classmateFirstName": `${ payer_firstname }`,
+              "classmateLastName": `${ payer_lastname }`,
+              "registrationId": `${ order_id }`,
+              "orderAmount": `${ order_amount }`,
+              "transactionStatus": `${ transaction_status }`,
+              "transactionCreated": `${ transaction_creation_time }`,
+              "cleaning": "True"
+            }
+          }
+        ]
+      })
+      mailjetReq
+        .then(async (result) => {
+          res.set("ok", true).status(200).send(`Emailed payment acknowledgement to ${ payer_email_address}`)   
+        })
+        .catch(async (err) => {
+          console.log('Error sending comment: ', err)
+          res.set("ok", false).status(500).send(`Email payment acknowledgement failed: `, err)   
+        })
+  }
+
+  if (item_description === 'CHS Tour') {
+    const mailjetReq = mailjet
+      .post("send", {'version': 'v3.1'})
+      .request({
+        "Messages": [
+          {
+            "From": {
+              "Email": `${ process.env.EMAIL_SENDER_ADDR }`,
+              "Name": `${ process.env.EMAIL_SENDER_NAME }`
+            },
+            "To": [
+              {
+                "Email": `${ payer_email_address }`,
+                "Name": `${ payer_firstname } ${ payer_lastname }`
+              }
+            ],
+            "TemplateID": 4612469,
+            "TemplateLanguage": true,
+            "Subject": "CHS73 50th Reunion - You are registered for the CHS Tour. We'll email event details when they become available",
+            "Variables": {
+              "classmateFirstName": `${ payer_firstname }`,
+              "classmateLastName": `${ payer_lastname }`,
+              "registrationId": `${ order_id }`,
+              "orderAmount": `${ order_amount }`,
+              "transactionStatus": `${ transaction_status }`,
+              "transactionCreated": `${ transaction_creation_time }`,
+              "cleaning": "True"
             }
           }
         ]
