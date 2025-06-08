@@ -13,71 +13,13 @@ const sendEventAck = async (req, res) => {
 
   console.log(`\nAcknowledging payment for ${ item_description } from ${ payer_firstname } ${ payer_lastname} (${ payer_email_address })`)
 
-  if (item_description === 'Friday Gathering') {
-    const mailjetReq = mailjet
-      .post("send", {'version': 'v3.1'})
-      .request({
-        "Messages": [
-          {
-            "From": {
-              "Email": `${ process.env.EMAIL_SENDER_ADDR }`,
-              "Name": `${ process.env.EMAIL_SENDER_NAME }`
-            },
-            "To": [
-              {
-                "Email": `${ payer_email_address }`,
-                "Name": `${ payer_firstname } ${ payer_lastname }`
-              }
-            ],
-            "TemplateID": 4560532,
-            "TemplateLanguage": true,
-            "Subject": "CHS73 50th Reunion - You are registered for the Friday Night gathering",
-            "Variables": {
-              "classmateFirstName": `${ payer_firstname }`,
-              "classmateLastName": `${ payer_lastname }`,
-              "registrationId": `${ order_id }`,
-              "orderAmount": `${ order_amount }`,
-              "transactionStatus": `${ transaction_status }`,
-              "transactionCreated": `${ transaction_creation_time }`,
-              "cleaning": "True"
-            }
-          }
-        ]
-      })
-      mailjetReq
-        .then(async (result) => {
-          res.set("ok", true).status(200).send(`Emailed payment acknowledgement to ${ payer_email_address}`)   
-        })
-        .catch(async (err) => {
-          console.log('Error sending comment: ', err)
-          res.set("ok", false).status(500).send(`Email payment acknowledgement failed: `, err)   
-        })
-  }
-
-  if(item_description === 'Saturday Gathering') {
-    let paymentInstructionLine1
-    let paymentInstructionLine2
-    let paymentInstructionLine3
-    let paymentInstructionLine4
-    let paymentInstructionLine5
-    let paymentInstructionLine6
-    if (transaction_status === 'PAYMENT PENDING - MAIL') {
-      paymentInstructionLine1 = "Please make your check out to Central High Class of 1973 & mail to:"
-      paymentInstructionLine2 = "Central High Class of 1973"
-      paymentInstructionLine3 = "C/o Dianna Todt"
-      paymentInstructionLine4 = "2086 Southern Expressway"
-      paymentInstructionLine5 = "Cape Girardeau, MO 63703"
-      paymentInstructionLine6 = ""
-    }
-
-    if (transaction_status === 'PAYMENT PENDING - DOOR') {
-      paymentInstructionLine1 = "Please present this receipt at the door along with your payment"
-      paymentInstructionLine2 = ""
-      paymentInstructionLine3 = ""
-      paymentInstructionLine4 = ""
-      paymentInstructionLine5 = ""
-      paymentInstructionLine6 = ""
-    }   
+  if(item_description === '52nd Reunion Picnic') {
+    let paymentInstructionLine1 = ''
+    let paymentInstructionLine2 = ''
+    let paymentInstructionLine3 = ''
+    let paymentInstructionLine4 = ''
+    let paymentInstructionLine5 = ''
+    let paymentInstructionLine6 = ''
 
     const mailjetReq = mailjet
       .post("send", {'version': 'v3.1'})
@@ -96,7 +38,7 @@ const sendEventAck = async (req, res) => {
             ],
             "TemplateID": 4560572,
             "TemplateLanguage": true,
-            "Subject": "CHS73 50th Reunion - You are registered for the Saturday Night gathering",
+            "Subject": "CHS73 52nd Reunion - You are registered for the Saturday gathering",
             "Variables": {
               "classmateFirstName": `${ payer_firstname }`,
               "classmateLastName": `${ payer_lastname }`,
@@ -131,88 +73,6 @@ const sendEventAck = async (req, res) => {
           res.set("ok", false).status(500).send(`Email payment acknowledgement failed: `, err)   
         })
   } 
-  
-  if (item_description === 'Golf Outing') {
-    const mailjetReq = mailjet
-      .post("send", {'version': 'v3.1'})
-      .request({
-        "Messages": [
-          {
-            "From": {
-              "Email": `${ process.env.EMAIL_SENDER_ADDR }`,
-              "Name": `${ process.env.EMAIL_SENDER_NAME }`
-            },
-            "To": [
-              {
-                "Email": `${ payer_email_address }`,
-                "Name": `${ payer_firstname } ${ payer_lastname }`
-              }
-            ],
-            "TemplateID": 4612466,
-            "TemplateLanguage": true,
-            "Subject": "CHS73 50th Reunion - You are registered for the Golf Outing. We'll email event details when they become available",
-            "Variables": {
-              "classmateFirstName": `${ payer_firstname }`,
-              "classmateLastName": `${ payer_lastname }`,
-              "registrationId": `${ order_id }`,
-              "orderAmount": `${ order_amount }`,
-              "transactionStatus": `${ transaction_status }`,
-              "transactionCreated": `${ transaction_creation_time }`,
-              "cleaning": "True"
-            }
-          }
-        ]
-      })
-      mailjetReq
-        .then(async (result) => {
-          res.set("ok", true).status(200).send(`Emailed payment acknowledgement to ${ payer_email_address}`)   
-        })
-        .catch(async (err) => {
-          console.log('Error sending comment: ', err)
-          res.set("ok", false).status(500).send(`Email payment acknowledgement failed: `, err)   
-        })
-  }
-
-  if (item_description === 'CHS Tour') {
-    const mailjetReq = mailjet
-      .post("send", {'version': 'v3.1'})
-      .request({
-        "Messages": [
-          {
-            "From": {
-              "Email": `${ process.env.EMAIL_SENDER_ADDR }`,
-              "Name": `${ process.env.EMAIL_SENDER_NAME }`
-            },
-            "To": [
-              {
-                "Email": `${ payer_email_address }`,
-                "Name": `${ payer_firstname } ${ payer_lastname }`
-              }
-            ],
-            "TemplateID": 4612469,
-            "TemplateLanguage": true,
-            "Subject": "CHS73 50th Reunion - You are registered for the CHS Tour. We'll email event details when they become available",
-            "Variables": {
-              "classmateFirstName": `${ payer_firstname }`,
-              "classmateLastName": `${ payer_lastname }`,
-              "registrationId": `${ order_id }`,
-              "orderAmount": `${ order_amount }`,
-              "transactionStatus": `${ transaction_status }`,
-              "transactionCreated": `${ transaction_creation_time }`,
-              "cleaning": "True"
-            }
-          }
-        ]
-      })
-      mailjetReq
-        .then(async (result) => {
-          res.set("ok", true).status(200).send(`Emailed payment acknowledgement to ${ payer_email_address}`)   
-        })
-        .catch(async (err) => {
-          console.log('Error sending comment: ', err)
-          res.set("ok", false).status(500).send(`Email payment acknowledgement failed: `, err)   
-        })
-  }
 }
 
 exports.sendEventAck = sendEventAck 
