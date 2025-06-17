@@ -7,7 +7,9 @@ const addPayment = async (order_id, item_description, order_amount,
   shipping_city, shipping_state, shipping_postal_code, shipping_country_code, 
   billing_token, facilitator_access_token, accelerated_payment, soft_descriptor,
   is_sponsor, is_veteran, classmateFirstName, classmateLastName, 
-  companionFirstName, companionLastName) => {
+  companionFirstName, companionLastName, noAttendees) => {
+
+  console.log(`noAttendees: ${ noAttendees }`)
   
   const currentDate = new Date()
   const base = new Airtable({ apiKey: process.env.AIRTABLE_API_KEY }).base(process.env.AIRTABLE_BASE)
@@ -41,6 +43,7 @@ const addPayment = async (order_id, item_description, order_amount,
       "Classmate Badge-Last Name": classmateLastName,
       "Companion Badge-First Name": companionFirstName,
       "Companion Badge-Last Name": companionLastName,
+      "No. Attendees": noAttendees || 0
     }, function(err, record) {
       if (err) {
         console.error(err)
@@ -59,7 +62,7 @@ const logPayment = async (req, res) => {
     shipping_city, shipping_state, shipping_postal_code, shipping_country_code, 
     billing_token, facilitator_access_token, accelerated_payment, soft_descriptor,
     is_sponsor, is_veteran, classmateFirstName, classmateLastName, 
-    companionFirstName, companionLastName } = req.body
+    companionFirstName, companionLastName, noAttendees } = req.body
 
   const recordID = await addPayment(order_id, item_description, order_amount, 
     transaction_status, transaction_creation_time, transaction_update_time,
@@ -68,7 +71,7 @@ const logPayment = async (req, res) => {
     shipping_city, shipping_state, shipping_postal_code, shipping_country_code, 
     billing_token, facilitator_access_token, accelerated_payment, soft_descriptor,
     is_sponsor, is_veteran,classmateFirstName, classmateLastName, 
-    companionFirstName, companionLastName)
+    companionFirstName, companionLastName, noAttendees)
 
   // Email the payment receipt to the payee
 

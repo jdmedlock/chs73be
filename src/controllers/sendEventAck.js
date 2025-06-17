@@ -3,7 +3,9 @@ const nodemailjet = require("node-mailjet")
 const sendEventAck = async (req, res) => {
   const { order_id, item_description,
     transaction_status, transaction_creation_time, payer_email_address, 
-    classmateFirstName, classmateLastName, companionFirstName, companionLastName } = req.body
+    classmateFirstName, classmateLastName, companionFirstName, companionLastName,
+    noAttendees
+  } = req.body
 
   const mailjet = nodemailjet
     .connect(process.env.MAILJET_API_KEY, process.env.MAILJET_SECRET_KEY)
@@ -42,6 +44,7 @@ const sendEventAck = async (req, res) => {
               "classmateBadgeLastName": `${ classmateLastName }`,
               "companionBadgeFirstName": `${ companionFirstName }`,
               "companionBadgeLastName": `${ companionLastName }`,
+              "noAttendees": `${ noAttendees || 0 }`
             }
           }
         ]
